@@ -1,0 +1,36 @@
+.wrapper {
+    max-width: 1440px;
+    width: 100%;
+    height: 100vh;
+    margin: 0 auto  ;
+    display: flex;
+    background-color: aliceblue;
+    
+}
+
+.users {
+    width: 20%;
+    background-color: rgba(103, 63, 115, 0.759);
+
+}
+
+.chat_wrapper{
+    width: 80%;
+    background-color: rgba(65, 143, 246, 0.707);
+    border-left: 2px solid black;
+    > h1 {
+        padding: 20px 0 20px 20px;
+    }
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+}
+
+.chat_block {
+    width: 100%;
+    max-width: 700px;
+    height: 80vh;
+    margin: 20px auto;
+    /* padding: 20px;    */
+    background-color: aqua;
+}
