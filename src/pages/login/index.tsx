@@ -1,12 +1,35 @@
 import { useNavigate } from 'react-router-dom';
 import s from './index.module.css'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 
 function Cookies(){
+  const [user, setUser] = useState(null);
+
+useEffect(() => {
+  const fetchActualUser = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8012/api/users/me', {
+        credentials: 'include',
+      });
+
+      if (!response.ok) throw new Error('Ошибка');
+
+      const data = await response.json();
+      setUser(data);
+      
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  fetchActualUser();
+}, []);
+
+
     return(
         <div className={s.cookies}>
-            <p>cookies</p>
+            <p>{user ? `Вы вошли как: ${user.username}` : 'Вы не вошли'}</p>
         </div>
     )
 }
@@ -17,7 +40,6 @@ function Cookies(){
 function LoginForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-//   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,7 +50,7 @@ function LoginForm() {
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:8025/api/users/login', {
+      const response = await fetch('http://127.0.0.1:8012/api/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -43,9 +65,8 @@ function LoginForm() {
       }
 
       const data = await response.json();
+      localStorage.setItem("access_token", data.access_token);
       console.log(data)
-    //   navigate('/dashboard'); // путь после входа, можешь заменить
-
     } catch (error) {
       console.error('Ошибка при входе:', error);
       alert('Ошибка сервера');
